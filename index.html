@@ -11,6 +11,8 @@
     background: #000000; /* black background */
     overflow: hidden;
   }
+
+  /* Canvas for snowflakes */
   #snowCanvas {
     position: fixed;
     top: 0;
@@ -18,8 +20,10 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 2; /* in front of GIF */
+    z-index: 2;
   }
+
+  /* Christmas tree GIF container */
   .tree-container {
     position: relative;
     z-index: 1;
@@ -32,15 +36,45 @@
     max-width: 600px;
     width: 100%;
   }
+
+  /* Music button */
+  #musicBtn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 3;
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #FFD700, #FFA500);
+    box-shadow: 0 0 15px rgba(255,215,0,0.8);
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+  #musicBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(255,215,0,1);
+  }
 </style>
 </head>
 <body>
 
+<!-- Snow canvas -->
 <canvas id="snowCanvas"></canvas>
 
+<!-- Christmas tree GIF -->
 <div class="tree-container">
   <img src="merry-christmas-christmas-tree.gif" alt="Christmas Tree">
 </div>
+
+<!-- Music button and audio -->
+<button id="musicBtn">🎵</button>
+<audio id="music" src="christmas-music.mp3" loop></audio>
 
 <script>
 // Canvas setup
@@ -114,6 +148,20 @@ function animateSnow() {
   requestAnimationFrame(animateSnow);
 }
 animateSnow();
+
+// Music button functionality
+const musicBtn = document.getElementById("musicBtn");
+const music = document.getElementById("music");
+
+musicBtn.addEventListener("click", () => {
+    if (music.paused) {
+        music.play();
+        musicBtn.textContent = "🔊";
+    } else {
+        music.pause();
+        musicBtn.textContent = "🎵";
+    }
+});
 </script>
 
 </body>
