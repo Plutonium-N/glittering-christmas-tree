@@ -98,8 +98,8 @@ function createSnowflake() {
   snowflakes.push({
     x: Math.random() * canvas.width,
     y: -10,
-    r: 1 + depth * 4,       // radius: 1-5
-    s: 0.5 + depth * 1.5,   // speed: 0.5-2
+    r: 1 + depth * 5,       // radius: 1-6
+    s: 0.2 + depth * 0.8,   // speed: 0.2-1 (slower)
     opacity: 0.3 + depth * 0.7
   });
 }
@@ -119,12 +119,12 @@ function animateSnow() {
     const column = Math.floor(f.x);
     const pileHeight = snowPile[column] || 0;
     if(f.y > canvas.height - pileHeight) {
-      snowPile[column] = pileHeight + f.r * 0.6; // uneven accumulation
+      snowPile[column] = pileHeight + f.r * 0.5; // uneven accumulation
       f.y = -10;
       f.x = Math.random() * canvas.width;
       const depth = Math.random();
-      f.r = 1 + depth * 4;
-      f.s = 0.5 + depth * 1.5;
+      f.r = 1 + depth * 5;
+      f.s = 0.2 + depth * 0.8; // slower speed
       f.opacity = 0.3 + depth * 0.7;
     }
 
