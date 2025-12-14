@@ -87,11 +87,11 @@
     50% { opacity: 0.8; }
   }
 
-  /* Desktop stacked "Thank you" text */
+  /* Desktop stacked "Thank you" text - center-aligned */
   .thank-you-text {
     position: fixed;
-    left: 20px;
-    top: 30%; /* higher on screen */
+    left: 15%; /* distance from left edge */
+    top: 50%; /* vertically centered */
     transform: translateY(-50%);
     color: rgba(200, 200, 200, 0.6); /* greyish transparent */
     font-size: 28px; /* bigger font */
@@ -99,6 +99,7 @@
     z-index: 3;
     pointer-events: none;
     line-height: 1.2; /* spacing between lines */
+    text-align: center; /* center each line */
   }
 
   /* Mobile adjustments */
