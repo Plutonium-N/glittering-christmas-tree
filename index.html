@@ -32,21 +32,19 @@
     max-width: 600px;
     width: 100%;
   }
+</style>
+</head>
+<body>
 
-  /* Music button styling */
-  #musicBtn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 3;
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #FFD700, #FFA500); /* gold gradient */
-    box-shadow: 0 0 15px rgba(255,215,0,0.8); /* sparkling glow */
-    font-size: 28px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: c
+<canvas id="snowCanvas"></canvas>
+
+<div class="tree-container">
+  <img src="merry-christmas-christmas-tree.gif" alt="Christmas Tree">
+</div>
+
+<script>
+// Canvas setup
+const canvas = document.getElementById("snowCanvas");
+const ctx = canvas.getContext("2d");
+
+function resi
