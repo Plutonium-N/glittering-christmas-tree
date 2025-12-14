@@ -69,7 +69,7 @@
     bottom: 30px;
     width: 100%;
     text-align: center;
-    font-size: 70px; /* desktop size remains */
+    font-size: 70px; /* desktop size */
     font-weight: bold;
     color: gold;
     z-index: 3;
@@ -90,16 +90,30 @@
   /* Desktop stacked "Thank you" text - center-aligned */
   .thank-you-text {
     position: fixed;
-    left: 15%; /* distance from left edge */
+    left: 15%; /* between left edge and GIF */
     top: 50%; /* vertically centered */
     transform: translateY(-50%);
     color: rgba(200, 200, 200, 0.6); /* greyish transparent */
-    font-size: 28px; /* bigger font */
+    font-size: 28px; /* same as requested */
     font-weight: bold;
     z-index: 3;
     pointer-events: none;
     line-height: 1.2; /* spacing between lines */
     text-align: center; /* center each line */
+  }
+
+  /* Bottom-right greetings text */
+  .greetings-text {
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+    font-size: 28px; /* same as Thank You text */
+    color: #9b7fa3; /* purple-greyish */
+    text-shadow: 2px 2px 4px #8B4513; /* brown shadow */
+    font-weight: bold;
+    z-index: 3;
+    pointer-events: none;
+    text-align: right;
   }
 
   /* Mobile adjustments */
@@ -127,6 +141,15 @@
     .thank-you-text {
       display: none; /* hide on mobile */
     }
+    .greetings-text {
+        font-size: 16px;
+        color: #ffffff;
+        text-shadow:
+          0 0 3px #FFD700,
+          0 0 6px #FFD700,
+          0 0 10px #FFD700,
+          0 0 15px #FFA500; /* golden glitter */
+    }
   }
 </style>
 </head>
@@ -148,6 +171,7 @@
   In<br>
   2025
 </div>
+<div class="greetings-text">Greetings from Plutonium 🌑</div>
 
 <button id="musicBtn">🎵</button>
 <audio id="music" src="christmas-music.mp3" loop></audio>
@@ -184,7 +208,7 @@ function createSnowflake() {
   let r, s;
   if(window.innerWidth < 600) { // mobile
     r = 1.5 + depth * 1.5;   // smaller flakes
-    s = 0.3 + depth * 0.3;   // slowest possible fall
+    s = 0.3 + depth * 0.3;   // slowest fall
   } else { // desktop
     r = 3 + depth * 2;       
     s = 1.5 + depth * 1;     
@@ -257,7 +281,6 @@ musicBtn.addEventListener("click", () => {
     } else {
         music.pause();
     }
-    // symbol stays the same
 });
 </script>
 
