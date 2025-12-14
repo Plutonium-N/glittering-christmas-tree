@@ -92,14 +92,27 @@ resize();
 let snowflakes = [];
 let snowPile = Array(canvas.width).fill(0);
 
-// Create snowflake with depth effect
+// Create snowflake with depth effect and less in the middle
 function createSnowflake() {
   const depth = Math.random(); // 0 = far, 1 = near
+  
+  const centerWidth = canvas.width * 0.3; // 30% of screen width for center
+  let x;
+  if(Math.random() < 0.7) {
+    // 70% chance: spawn on the sides
+    x = Math.random() < 0.5 
+        ? Math.random() * ((canvas.width - centerWidth)/2) // left
+        : canvas.width - ((canvas.width - centerWidth)/2) + Math.random() * ((canvas.width - centerWidth)/2); // right
+  } else {
+    // 30% chance: spawn in middle
+    x = canvas.width/2 - centerWidth/2 + Math.random() * centerWidth;
+  }
+
   snowflakes.push({
-    x: Math.random() * canvas.width,
+    x: x,
     y: -10,
     r: 1 + depth * 5,       // radius: 1-6
-    s: 0.2 + depth * 0.8,   // speed: 0.2-1 (slower)
+    s: 0.2 + depth * 0.8,   // slower speed
     opacity: 0.3 + depth * 0.7
   });
 }
@@ -124,7 +137,7 @@ function animateSnow() {
       f.x = Math.random() * canvas.width;
       const depth = Math.random();
       f.r = 1 + depth * 5;
-      f.s = 0.2 + depth * 0.8; // slower speed
+      f.s = 0.2 + depth * 0.8;
       f.opacity = 0.3 + depth * 0.7;
     }
 
