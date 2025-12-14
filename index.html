@@ -66,7 +66,7 @@ body {
   box-shadow: 0 0 30px rgba(255,215,0,1);
 }
 
-/* Merry Christmas text - DESKTOP (UNCHANGED) */
+/* Merry Christmas text - DESKTOP */
 .merry-text {
   position: fixed;
   bottom: 30px;
@@ -129,32 +129,26 @@ body {
     margin-top: 50px;
   }
 
-  /* GOLD TEXT + BROWN OUTLINE + GLOW */
+  /* GOLD GLOW TEXT UNDER GIF */
   .merry-text {
     font-size: 36px;
     font-weight: bold;
     color: #FFD700;
 
     text-shadow:
-      /* brown outline */
       -1px -1px 0 #6b3e1e,
        1px -1px 0 #6b3e1e,
       -1px  1px 0 #6b3e1e,
        1px  1px 0 #6b3e1e,
+      0 0 6px  #FFEB99,
+      0 0 14px #FFD700,
+      0 0 28px #FFA500;
 
-      /* inner warm gold */
-      0 0 4px  #FFEB99,
-
-      /* outer gold glow */
-      0 0 10px #FFD700,
-      0 0 20px #FFA500,
-      0 0 35px rgba(255, 165, 0, 0.9);
-
-    animation: goldPulse 2.5s ease-in-out infinite;
+    animation: goldGlow 2s ease-in-out infinite alternate;
   }
 
-  @keyframes goldPulse {
-    0%, 100% {
+  @keyframes goldGlow {
+    0% {
       text-shadow:
         -1px -1px 0 #6b3e1e,
          1px -1px 0 #6b3e1e,
@@ -171,8 +165,18 @@ body {
         -1px  1px 0 #6b3e1e,
          1px  1px 0 #6b3e1e,
         0 0 10px #FFF2B2,
-        0 0 26px #FFD700,
-        0 0 45px #FFA500;
+        0 0 20px #FFD700,
+        0 0 40px #FFA500;
+    }
+    100% {
+      text-shadow:
+        -1px -1px 0 #6b3e1e,
+         1px -1px 0 #6b3e1e,
+        -1px  1px 0 #6b3e1e,
+         1px  1px 0 #6b3e1e,
+        0 0 6px  #FFEB99,
+        0 0 14px #FFD700,
+        0 0 28px #FFA500;
     }
   }
 
