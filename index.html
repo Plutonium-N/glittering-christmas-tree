@@ -10,9 +10,10 @@
     padding: 0;
     background: #000000; /* black background */
     overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 
-  /* Canvas for snowflakes */
+  /* Snow canvas */
   #snowCanvas {
     position: fixed;
     top: 0;
@@ -60,6 +61,41 @@
     transform: scale(1.1);
     box-shadow: 0 0 25px rgba(255,215,0,1);
   }
+
+  /* Merry Christmas text */
+  .merry-text {
+    position: fixed;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+    font-size: 60px;
+    font-weight: bold;
+    color: gold;
+    z-index: 3;
+    text-shadow:
+      0 0 5px #FFD700,
+      0 0 10px #FFD700,
+      0 0 20px #FFA500,
+      0 0 30px #FFA500,
+      0 0 40px #FFD700;
+    animation: glitter 2s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes glitter {
+    0%, 100% { opacity: 1; text-shadow: 
+      0 0 5px #FFD700,
+      0 0 10px #FFD700,
+      0 0 20px #FFA500,
+      0 0 30px #FFA500,
+      0 0 40px #FFD700; }
+    50% { opacity: 0.8; text-shadow:
+      0 0 2px #FFD700,
+      0 0 5px #FFD700,
+      0 0 10px #FFA500,
+      0 0 15px #FFA500,
+      0 0 20px #FFD700; }
+  }
 </style>
 </head>
 <body>
@@ -71,6 +107,9 @@
 <div class="tree-container">
   <img src="merry-christmas-christmas-tree.gif" alt="Christmas Tree">
 </div>
+
+<!-- Merry Christmas text -->
+<div class="merry-text">Merry Christmas</div>
 
 <!-- Music button and audio -->
 <button id="musicBtn">🎵</button>
@@ -92,28 +131,26 @@ resize();
 let snowflakes = [];
 let snowPile = Array(canvas.width).fill(0);
 
-// Create snowflake with depth effect and less in the middle
+// Create rain-like snowflake
 function createSnowflake() {
-  const depth = Math.random(); // 0 = far, 1 = near
+  const depth = Math.random();
   
-  const centerWidth = canvas.width * 0.3; // 30% of screen width for center
+  const centerWidth = canvas.width * 0.3; // 30% center
   let x;
   if(Math.random() < 0.7) {
-    // 70% chance: spawn on the sides
     x = Math.random() < 0.5 
-        ? Math.random() * ((canvas.width - centerWidth)/2) // left
-        : canvas.width - ((canvas.width - centerWidth)/2) + Math.random() * ((canvas.width - centerWidth)/2); // right
+        ? Math.random() * ((canvas.width - centerWidth)/2) 
+        : canvas.width - ((canvas.width - centerWidth)/2) + Math.random() * ((canvas.width - centerWidth)/2);
   } else {
-    // 30% chance: spawn in middle
     x = canvas.width/2 - centerWidth/2 + Math.random() * centerWidth;
   }
 
   snowflakes.push({
     x: x,
     y: -10,
-    r: 1 + depth * 5,       // radius: 1-6
-    s: 0.2 + depth * 0.8,   // slower speed
-    opacity: 0.3 + depth * 0.7
+    r: 0.5 + depth * 1.5,   // smaller radius for raindrop effect
+    s: 1 + depth * 1.5,     // faster speed
+    opacity: 0.2 + depth * 0.5
   });
 }
 
@@ -121,30 +158,30 @@ function createSnowflake() {
 function animateSnow() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // Occasionally create new snowflake
-  if (Math.random() < 0.5) createSnowflake();
+  if (Math.random() < 0.7) createSnowflake();
 
-  // Draw snowflakes
   snowflakes.forEach(f => {
     f.y += f.s;
 
-    // Snow pile collision
     const column = Math.floor(f.x);
     const pileHeight = snowPile[column] || 0;
     if(f.y > canvas.height - pileHeight) {
-      snowPile[column] = pileHeight + f.r * 0.5; // uneven accumulation
+      snowPile[column] = pileHeight + f.r * 0.3; 
       f.y = -10;
       f.x = Math.random() * canvas.width;
       const depth = Math.random();
-      f.r = 1 + depth * 5;
-      f.s = 0.2 + depth * 0.8;
-      f.opacity = 0.3 + depth * 0.7;
+      f.r = 0.5 + depth * 1.5;
+      f.s = 1 + depth * 1.5;
+      f.opacity = 0.2 + depth * 0.5;
     }
 
+    // Draw as small line for raindrop effect
     ctx.beginPath();
-    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${f.opacity})`;
-    ctx.fill();
+    ctx.moveTo(f.x, f.y);
+    ctx.lineTo(f.x, f.y + f.r * 4);
+    ctx.strokeStyle = `rgba(255,255,255,${f.opacity})`;
+    ctx.lineWidth = f.r;
+    ctx.stroke();
   });
 
   // Draw snow pile
