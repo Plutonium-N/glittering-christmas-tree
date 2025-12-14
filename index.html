@@ -14,19 +14,6 @@
         font-family: system-ui, sans-serif;
     }
 
-    #musicBtn {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        padding: 12px 18px;
-        border-radius: 30px;
-        border: none;
-        background: rgba(255,255,255,0.85);
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
     #hint {
         position: fixed;
         bottom: 20px;
@@ -40,14 +27,9 @@
 </head>
 
 <body>
-<button id="musicBtn">▶ Music</button>
 <div id="hint">Merry Christmas 🎅❄️</div>
 
 <canvas id="scene"></canvas>
-
-<audio id="music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
 
 <script>
 const canvas = document.getElementById("scene");
@@ -98,69 +80,4 @@ for (let i = 0; i < canvas.width; i += 4) {
 }
 
 function addFlake() {
-    flakes.push({
-        x: Math.random() * canvas.width,
-        y: -10,
-        r: Math.random() * 3 + 1,
-        s: Math.random() * 1 + 0.5
-    });
-}
-
-/* ---------- MUSIC ---------- */
-const music = document.getElementById("music");
-const btn = document.getElementById("musicBtn");
-
-btn.onclick = () => {
-    if (music.paused) {
-        music.play();
-        btn.textContent = "⏸ Music";
-    } else {
-        music.pause();
-        btn.textContent = "▶ Music";
-    }
-};
-
-/* ---------- LOOP ---------- */
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // trees
-    drawTree(canvas.width * 0.25, canvas.height * 0.65, 1.4);
-    drawTree(canvas.width * 0.5, canvas.height * 0.7, 1.8);
-    drawTree(canvas.width * 0.75, canvas.height * 0.65, 1.3);
-
-    // snowflakes
-    if (Math.random() < 0.4) addFlake();
-
-    flakes.forEach(f => {
-        f.y += f.s;
-        ctx.beginPath();
-        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-        ctx.fillStyle = "white";
-        ctx.fill();
-
-        const pileIndex = Math.floor(f.x / 4);
-        if (f.y > canvas.height - snowPile[pileIndex] - 5) {
-            snowPile[pileIndex] += f.r * 0.3;
-            f.y = -10;
-        }
-    });
-
-    // snow ground (uneven)
-    ctx.beginPath();
-    ctx.moveTo(0, canvas.height);
-    for (let i = 0; i < snowPile.length; i++) {
-        ctx.lineTo(i * 4, canvas.height - snowPile[i]);
-    }
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.closePath();
-    ctx.fillStyle = "#ffffff";
-    ctx.fill();
-
-    requestAnimationFrame(animate);
-}
-
-animate();
-</script>
-</body>
-</html>
+    flake
