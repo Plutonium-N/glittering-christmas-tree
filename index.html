@@ -87,18 +87,18 @@
     50% { opacity: 0.8; }
   }
 
-  /* Desktop thank you text */
+  /* Desktop stacked "Thank you" text */
   .thank-you-text {
     position: fixed;
     left: 20px;
-    top: 50%;
+    top: 30%; /* higher on screen */
     transform: translateY(-50%);
     color: rgba(200, 200, 200, 0.6); /* greyish transparent */
-    font-size: 20px;
+    font-size: 28px; /* bigger font */
     font-weight: bold;
     z-index: 3;
     pointer-events: none;
-    white-space: nowrap;
+    line-height: 1.2; /* spacing between lines */
   }
 
   /* Mobile adjustments */
@@ -138,7 +138,15 @@
 </div>
 
 <div class="merry-text">Merry Christmas</div>
-<div class="thank-you-text">Thank you for staying around in 2025</div>
+<div class="thank-you-text">
+  Thank<br>
+  You<br>
+  For<br>
+  Staying<br>
+  Around<br>
+  In<br>
+  2025
+</div>
 
 <button id="musicBtn">🎵</button>
 <audio id="music" src="christmas-music.mp3" loop></audio>
