@@ -6,175 +6,176 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: #000000;
-    overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+body {
+  margin: 0;
+  padding: 0;
+  background: #000000;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  /* Snow canvas */
-  #snowCanvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 2;
-  }
+/* Snow canvas */
+#snowCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
 
-  /* Tree container */
-  .tree-container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-  }
+/* Christmas tree GIF container */
+.tree-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.tree-container img {
+  max-width: 800px;
+  width: 100%;
+}
+
+/* Desktop music button */
+#musicBtn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 3;
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0.8);
+  color: #8B4513;
+  box-shadow: 0 0 20px rgba(255,215,0,0.9);
+  font-size: 32px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+#musicBtn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(255,215,0,1);
+}
+
+/* Merry Christmas text - DESKTOP (UNCHANGED) */
+.merry-text {
+  position: fixed;
+  bottom: 30px;
+  width: 100%;
+  text-align: center;
+  font-size: 70px;
+  font-weight: bold;
+  color: gold;
+  z-index: 3;
+  text-shadow:
+    0 0 10px purple,
+    0 0 20px purple,
+    0 0 30px purple,
+    0 0 40px purple;
+  animation: glitter 2s infinite;
+  pointer-events: none;
+}
+
+@keyframes glitter {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Desktop stacked Thank You text */
+.thank-you-text {
+  position: fixed;
+  left: 15%;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(200, 200, 200, 0.6);
+  font-size: 28px;
+  font-weight: bold;
+  z-index: 3;
+  pointer-events: none;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* Bottom-right greetings text */
+.greetings-text {
+  position: fixed;
+  bottom: 15px;
+  right: 20px;
+  font-size: 13px;
+  color: #9b7fa3;
+  text-shadow: 2px 2px 4px #8B4513;
+  font-weight: bold;
+  z-index: 3;
+  pointer-events: none;
+  text-align: right;
+}
+
+/* ========================= */
+/* 📱 MOBILE ADJUSTMENTS ONLY */
+/* ========================= */
+@media (max-width: 600px) {
 
   .tree-container img {
-    max-width: 800px;
-    width: 100%;
+    max-width: 95%;
+    margin-top: 50px;
   }
 
-  /* Music button */
-  #musicBtn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 3;
-    width: 70px;
-    height: 70px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(255, 215, 0, 0.8);
-    color: #8B4513;
-    box-shadow: 0 0 20px rgba(255,215,0,0.9);
-    font-size: 32px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.2s, box-shadow 0.3s;
-  }
-
-  #musicBtn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 30px rgba(255,215,0,1);
-  }
-
-  /* Merry Christmas - desktop */
+  /* WHITE TEXT + GRADIENT GOLD GLOW */
   .merry-text {
-    margin-top: 20px;
-    font-size: 70px;
-    font-weight: bold;
-    color: gold;
-    z-index: 3;
-    text-align: center;
+    font-size: 36px;
+    color: #ffffff;
+
     text-shadow:
-      0 0 10px purple,
-      0 0 20px purple,
-      0 0 30px purple,
-      0 0 40px purple;
-    animation: glitter 2s infinite;
-    pointer-events: none;
+      0 0 6px  #fff2b2,
+      0 0 12px #FFD700,
+      0 0 22px #FFA500,
+      0 0 35px #FFB700,
+      0 0 55px rgba(255, 183, 0, 0.95);
+
+    animation: goldPulse 2.5s ease-in-out infinite;
   }
 
-  @keyframes glitter {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.85; }
-  }
-
-  /* Thank you text */
-  .thank-you-text {
-    position: fixed;
-    left: 15%;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(200, 200, 200, 0.6);
-    font-size: 28px;
-    font-weight: bold;
-    z-index: 3;
-    pointer-events: none;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  /* Greetings */
-  .greetings-text {
-    position: fixed;
-    bottom: 15px;
-    right: 20px;
-    font-size: 13px;
-    color: #9b7fa3;
-    text-shadow: 2px 2px 4px #8B4513;
-    font-weight: bold;
-    z-index: 3;
-    pointer-events: none;
-    text-align: right;
-  }
-
-  /* ===================== */
-  /* 📱 MOBILE VIEW ONLY */
-  /* ===================== */
-  @media (max-width: 600px) {
-
-    .tree-container img {
-      max-width: 95%;
-      margin-top: 40px;
-    }
-
-    .merry-text {
-      font-size: 36px;
-      color: #ffffff;
-
-      /* GRADIENT GOLD GLOW */
+  @keyframes goldPulse {
+    0%, 100% {
       text-shadow:
         0 0 6px  #fff2b2,
         0 0 12px #FFD700,
         0 0 22px #FFA500,
         0 0 35px #FFB700,
-        0 0 50px rgba(255, 183, 0, 0.9);
-
-      animation: goldPulse 2.5s ease-in-out infinite;
+        0 0 55px rgba(255, 183, 0, 0.9);
     }
-
-    @keyframes goldPulse {
-      0%, 100% {
-        text-shadow:
-          0 0 6px  #fff2b2,
-          0 0 12px #FFD700,
-          0 0 22px #FFA500,
-          0 0 35px #FFB700,
-          0 0 50px rgba(255, 183, 0, 0.8);
-      }
-      50% {
-        text-shadow:
-          0 0 12px #ffffff,
-          0 0 24px #FFE066,
-          0 0 40px #FFD700,
-          0 0 60px #FFA500,
-          0 0 80px rgba(255, 165, 0, 1);
-      }
-    }
-
-    #musicBtn {
-      width: 45px;
-      height: 45px;
-      font-size: 22px;
-      background: red;
-      color: gold;
-    }
-
-    .thank-you-text,
-    .greetings-text {
-      display: none;
+    50% {
+      text-shadow:
+        0 0 12px #ffffff,
+        0 0 25px #FFE066,
+        0 0 45px #FFD700,
+        0 0 65px #FFA500,
+        0 0 90px rgba(255, 165, 0, 1);
     }
   }
+
+  #musicBtn {
+    width: 45px;
+    height: 45px;
+    font-size: 22px;
+    background: red;
+    color: gold;
+  }
+
+  .thank-you-text,
+  .greetings-text {
+    display: none;
+  }
+}
 </style>
 </head>
 
@@ -183,9 +184,10 @@
 <canvas id="snowCanvas"></canvas>
 
 <div class="tree-container">
-  <img src="./merry-christmas-christmas-tree.gif" alt="Christmas Tree">
-  <div class="merry-text">Merry Christmas</div>
+  <img src="merry-christmas-christmas-tree.gif" alt="Christmas Tree">
 </div>
+
+<div class="merry-text">Merry Christmas</div>
 
 <div class="thank-you-text">
   Thank<br>
@@ -200,88 +202,90 @@
 <div class="greetings-text">Greetings from Plutonium 🌑</div>
 
 <button id="musicBtn">🎵</button>
-<audio id="music" src="./christmas-music.mp3" loop></audio>
+<audio id="music" src="christmas-music.mp3" loop></audio>
 
 <script>
-  const canvas = document.getElementById("snowCanvas");
-  const ctx = canvas.getContext("2d");
+/* Canvas setup */
+const canvas = document.getElementById("snowCanvas");
+const ctx = canvas.getContext("2d");
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+let snowflakes = [];
+let snowPile = Array(canvas.width).fill(0);
+
+function createSnowflake() {
+  const depth = Math.random();
+  const centerWidth = canvas.width * 0.3;
+  let x;
+
+  if (Math.random() < 0.3) {
+    x = canvas.width/2 - centerWidth/2 + Math.random() * centerWidth;
+  } else {
+    x = Math.random() * (canvas.width - centerWidth);
+    if (x > canvas.width/2 - centerWidth/2) x += centerWidth;
   }
-  window.addEventListener("resize", resize);
-  resize();
 
-  let snowflakes = [];
-  let snowPile = Array(canvas.width).fill(0);
+  let r = window.innerWidth < 600 ? 2 + depth * 1.5 : 3 + depth * 2;
+  let s = window.innerWidth < 600 ? 0.2 + depth * 0.3 : 1.5 + depth * 1;
 
-  function createSnowflake() {
-    const depth = Math.random();
-    const centerWidth = canvas.width * 0.3;
-    let x;
+  snowflakes.push({
+    x, y: -10, r, s,
+    opacity: 0.2 + depth * 0.5,
+    dx: (Math.random() - 0.5) * 0.5
+  });
+}
 
-    if (Math.random() < 0.3) {
-      x = canvas.width / 2 - centerWidth / 2 + Math.random() * centerWidth;
-    } else {
-      x = Math.random() * (canvas.width - centerWidth);
-      if (x > canvas.width / 2 - centerWidth / 2) x += centerWidth;
+function animateSnow() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  if (Math.random() < 0.8) createSnowflake();
+
+  snowflakes.forEach(f => {
+    f.y += f.s;
+    f.x += f.dx;
+
+    const column = Math.floor(f.x);
+    const pileHeight = snowPile[column] || 0;
+
+    if (f.y > canvas.height - pileHeight) {
+      snowPile[column] = pileHeight + f.r * 0.3;
+      f.y = -10;
+      f.x = Math.random() * canvas.width;
     }
-
-    let r = window.innerWidth < 600 ? 2 + depth * 1.5 : 3 + depth * 2;
-    let s = window.innerWidth < 600 ? 0.2 + depth * 0.3 : 1.5 + depth * 1;
-
-    snowflakes.push({
-      x, y: -10, r, s,
-      opacity: 0.2 + depth * 0.5,
-      dx: (Math.random() - 0.5) * 0.5
-    });
-  }
-
-  function animateSnow() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    if (Math.random() < 0.8) createSnowflake();
-
-    snowflakes.forEach(f => {
-      f.y += f.s;
-      f.x += f.dx;
-
-      const column = Math.floor(f.x);
-      const pileHeight = snowPile[column] || 0;
-
-      if (f.y > canvas.height - pileHeight) {
-        snowPile[column] = pileHeight + f.r * 0.3;
-        f.y = -10;
-        f.x = Math.random() * canvas.width;
-      }
-
-      ctx.beginPath();
-      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${f.opacity})`;
-      ctx.fill();
-    });
 
     ctx.beginPath();
-    ctx.moveTo(0, canvas.height);
-    for (let i = 0; i < snowPile.length; i++) {
-      ctx.lineTo(i, canvas.height - snowPile[i]);
-    }
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.closePath();
-    ctx.fillStyle = "#ffffff";
+    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${f.opacity})`;
     ctx.fill();
-
-    requestAnimationFrame(animateSnow);
-  }
-  animateSnow();
-
-  const musicBtn = document.getElementById("musicBtn");
-  const music = document.getElementById("music");
-
-  musicBtn.addEventListener("click", () => {
-    music.paused ? music.play() : music.pause();
   });
+
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height);
+  for (let i=0; i<snowPile.length; i++) {
+    ctx.lineTo(i, canvas.height - snowPile[i]);
+  }
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.closePath();
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+
+  requestAnimationFrame(animateSnow);
+}
+animateSnow();
+
+/* Music button */
+const musicBtn = document.getElementById("musicBtn");
+const music = document.getElementById("music");
+
+musicBtn.addEventListener("click", () => {
+  music.paused ? music.play() : music.pause();
+});
 </script>
 
 </body>
