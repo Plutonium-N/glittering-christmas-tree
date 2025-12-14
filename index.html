@@ -8,7 +8,7 @@
   body {
     margin: 0;
     padding: 0;
-    background: #000000; /* black background matches GIF */
+    background: #000000; /* black background */
     overflow: hidden;
   }
   #snowCanvas {
@@ -17,7 +17,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* allows clicks on GIF */
+    pointer-events: none;
+    z-index: 2; /* in front of GIF */
   }
   .tree-container {
     position: relative;
@@ -31,14 +32,33 @@
     max-width: 600px;
     width: 100%;
   }
+  /* Music button styling */
+  #musicBtn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 3;
+    background: rgba(255,255,255,0.8);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
+
 <canvas id="snowCanvas"></canvas>
 
 <div class="tree-container">
   <img src="merry-christmas-christmas-tree.gif" alt="Christmas Tree">
 </div>
+
+<!-- Music button and audio -->
+<button id="musicBtn">🎵</button>
+<audio id="music" src="christmas-music.mp3" loop></audio>
 
 <script>
 const canvas = document.getElementById("snowCanvas");
@@ -51,42 +71,78 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
-// Snowflake properties
+// Snowflake array
 let snowflakes = [];
+// Snow pile array (one value per x-pixel column)
+let snowPile = Array(canvas.width).fill(0);
+
 function createSnowflake() {
   snowflakes.push({
     x: Math.random() * canvas.width,
     y: -10,
     r: Math.random() * 3 + 1,
-    s: Math.random() * 1 + 0.5 // speed
+    s: Math.random() * 1 + 0.5
   });
 }
 
-// Snow animation
 function animateSnow() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  
+
+  // Create new snowflakes
   if (Math.random() < 0.5) createSnowflake();
-  
+
+  // Draw snowflakes
   snowflakes.forEach(f => {
     f.y += f.s;
-    ctx.beginPath();
-    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-    ctx.fillStyle = "white";
-    ctx.fill();
-    
-    // reset if snowflake reaches bottom
-    if(f.y > canvas.height) {
+
+    // Check if snowflake hits the snow pile
+    const column = Math.floor(f.x);
+    const pileHeight = snowPile[column] || 0;
+    if(f.y > canvas.height - pileHeight) {
+      // Add to snow pile
+      snowPile[column] = pileHeight + f.r * 0.6; // uneven accumulation
+      // Reset snowflake
       f.y = -10;
       f.x = Math.random() * canvas.width;
       f.r = Math.random() * 3 + 1;
       f.s = Math.random() * 1 + 0.5;
     }
+
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    ctx.fillStyle = "white";
+    ctx.fill();
   });
-  
+
+  // Draw snow pile
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height);
+  for(let i=0; i<snowPile.length; i++) {
+    ctx.lineTo(i, canvas.height - snowPile[i]);
+  }
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.closePath();
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+
   requestAnimationFrame(animateSnow);
 }
 animateSnow();
+
+// Music button functionality
+const musicBtn = document.getElementById("musicBtn");
+const music = document.getElementById("music");
+
+musicBtn.addEventListener("click", () => {
+    if (music.paused) {
+        music.play();
+        musicBtn.textContent = "🔊";
+    } else {
+        music.pause();
+        musicBtn.textContent = "🎵";
+    }
+});
 </script>
+
 </body>
 </html>
