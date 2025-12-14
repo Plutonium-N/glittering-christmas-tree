@@ -34,11 +34,11 @@
     height: 100vh;
   }
   .tree-container img {
-    max-width: 800px;  /* slightly smaller than before */
+    max-width: 800px;  /* desktop size */
     width: 100%;
   }
 
-  /* Music button */
+  /* Desktop music button */
   #musicBtn {
     position: fixed;
     top: 15px;
@@ -48,7 +48,8 @@
     height: 70px;
     border: none;
     border-radius: 50%;
-    background: rgba(255, 215, 0, 0.8);
+    background: rgba(255, 215, 0, 0.8); /* gold slightly transparent */
+    color: #8B4513; /* brown symbol */
     box-shadow: 0 0 20px rgba(255,215,0,0.9);
     font-size: 32px;
     cursor: pointer;
@@ -68,7 +69,7 @@
     bottom: 30px;
     width: 100%;
     text-align: center;
-    font-size: 70px; /* slightly smaller than before */
+    font-size: 70px; /* desktop size */
     font-weight: bold;
     color: gold;
     z-index: 3;
@@ -90,16 +91,24 @@
   /* Mobile adjustments */
   @media (max-width: 600px) {
     .tree-container img {
-      max-width: 90%;       /* previous mobile GIF size */
-      margin-top: -50px;
+      max-width: 95%;       /* slightly bigger */
+      margin-top: -30px;    /* previous position */
     }
     .merry-text {
-      font-size: 36px;      /* previous mobile text size */
+      font-size: 36px;      /* smaller for mobile */
+      color: #ddd;          /* white-grey */
+      -webkit-text-stroke: 1px gold; /* golden outline */
+      text-shadow:
+        0 0 3px #FFD700,
+        0 0 6px #FFD700,
+        0 0 10px #FFA500;
     }
     #musicBtn {
       width: 45px;
       height: 45px;
       font-size: 22px;
+      background: red;
+      color: gold;
     }
   }
 </style>
@@ -140,21 +149,19 @@ function createSnowflake() {
 
   const rand = Math.random();
   if (rand < 0.3) {
-    // 30% chance in middle
     x = canvas.width/2 - centerWidth/2 + Math.random() * centerWidth;
   } else {
-    // 70% outside middle
     x = Math.random() * (canvas.width - centerWidth);
     if (x > canvas.width/2 - centerWidth/2) x += centerWidth;
   }
 
   let r, s;
   if(window.innerWidth < 600) { // mobile
-    r = 2 + depth * 2;       // slightly bigger flakes
-    s = 1 + depth * 1.5;     // slightly slower
+    r = 1.5 + depth * 1.5;   // smaller flakes
+    s = 1.5 + depth * 1;     // slower fall like desktop
   } else { // desktop
-    r = 3 + depth * 2;       // bigger
-    s = 1.5 + depth * 1;     // slower
+    r = 3 + depth * 2;       
+    s = 1.5 + depth * 1;     
   }
 
   snowflakes.push({
@@ -171,7 +178,7 @@ function createSnowflake() {
 function animateSnow() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  const snowChance = window.innerWidth < 600 ? 0.3 : 0.8; // fewer flakes on mobile
+  const snowChance = 0.8; // same for desktop and mobile
   if (Math.random() < snowChance) createSnowflake();
 
   snowflakes.forEach(f => {
@@ -186,8 +193,8 @@ function animateSnow() {
       f.y = -10;
       f.x = Math.random() * canvas.width;
       const depth = Math.random();
-      f.r = window.innerWidth < 600 ? 2 + depth * 2 : 3 + depth * 2;
-      f.s = window.innerWidth < 600 ? 1 + depth * 1.5 : 1.5 + depth * 1;
+      f.r = window.innerWidth < 600 ? 1.5 + depth * 1.5 : 3 + depth * 2;
+      f.s = 1.5 + depth * 1;
       f.opacity = 0.2 + depth * 0.5;
       f.dx = (Math.random() - 0.5) * 0.5;
     }
@@ -221,7 +228,11 @@ const music = document.getElementById("music");
 musicBtn.addEventListener("click", () => {
   if (music.paused) {
     music.play();
-    musicBtn.textContent = "🔊";
+    if(window.innerWidth < 600) {
+        musicBtn.textContent = "🔊"; // mobile still gold
+    } else {
+        musicBtn.textContent = "🔊"; // desktop still brown
+    }
   } else {
     music.pause();
     musicBtn.textContent = "🎵";
