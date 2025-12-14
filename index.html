@@ -34,7 +34,7 @@
     height: 100vh;
   }
   .tree-container img {
-    max-width: 900px;
+    max-width: 800px;  /* slightly smaller than before */
     width: 100%;
   }
 
@@ -68,7 +68,7 @@
     bottom: 30px;
     width: 100%;
     text-align: center;
-    font-size: 90px; /* desktop size */
+    font-size: 70px; /* slightly smaller than before */
     font-weight: bold;
     color: gold;
     z-index: 3;
@@ -90,16 +90,16 @@
   /* Mobile adjustments */
   @media (max-width: 600px) {
     .tree-container img {
-      max-width: 95%;       /* slightly bigger GIF */
-      margin-top: -30px;    /* move slightly higher */
+      max-width: 90%;       /* previous mobile GIF size */
+      margin-top: -50px;
     }
     .merry-text {
-      font-size: 48px;      /* larger text */
+      font-size: 36px;      /* previous mobile text size */
     }
     #musicBtn {
-      width: 50px;
-      height: 50px;
-      font-size: 24px;
+      width: 45px;
+      height: 45px;
+      font-size: 22px;
     }
   }
 </style>
@@ -150,7 +150,7 @@ function createSnowflake() {
 
   let r, s;
   if(window.innerWidth < 600) { // mobile
-    r = 2 + depth * 2;       // slightly bigger
+    r = 2 + depth * 2;       // slightly bigger flakes
     s = 1 + depth * 1.5;     // slightly slower
   } else { // desktop
     r = 3 + depth * 2;       // bigger
@@ -171,7 +171,7 @@ function createSnowflake() {
 function animateSnow() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  const snowChance = window.innerWidth < 600 ? 0.5 : 0.8;
+  const snowChance = window.innerWidth < 600 ? 0.3 : 0.8; // fewer flakes on mobile
   if (Math.random() < snowChance) createSnowflake();
 
   snowflakes.forEach(f => {
@@ -231,4 +231,3 @@ musicBtn.addEventListener("click", () => {
 
 </body>
 </html>
-
