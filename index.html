@@ -63,7 +63,7 @@
     box-shadow: 0 0 30px rgba(255,215,0,1);
   }
 
-  /* Merry Christmas text */
+  /* Merry Christmas text - Desktop */
   .merry-text {
     position: fixed;
     bottom: 30px;
@@ -74,11 +74,10 @@
     color: gold;
     z-index: 3;
     text-shadow:
-      0 0 5px #FFD700,
-      0 0 10px #FFD700,
-      0 0 20px #FFA500,
-      0 0 30px #FFA500,
-      0 0 40px #FFD700;
+        0 0 10px purple,
+        0 0 20px purple,
+        0 0 30px purple,
+        0 0 40px purple;
     animation: glitter 2s infinite;
     pointer-events: none;
   }
@@ -91,24 +90,24 @@
   /* Mobile adjustments */
   @media (max-width: 600px) {
     .tree-container img {
-      max-width: 95%;       /* slightly bigger */
-      margin-top: -30px;    /* previous position */
+      max-width: 95%;       
+      margin-top: 50px;    /* center vertically */
     }
     .merry-text {
-      font-size: 36px;      /* smaller for mobile */
-      color: #ddd;          /* white-grey */
-      -webkit-text-stroke: 1px gold; /* golden outline */
+      font-size: 36px;      
+      color: #ffffff;       
       text-shadow:
         0 0 3px #FFD700,
         0 0 6px #FFD700,
-        0 0 10px #FFA500;
+        0 0 10px #FFD700,
+        0 0 15px #FFA500; /* golden glitter */
     }
     #musicBtn {
       width: 45px;
       height: 45px;
       font-size: 22px;
       background: red;
-      color: gold;
+      color: gold; 
     }
   }
 </style>
@@ -158,7 +157,7 @@ function createSnowflake() {
   let r, s;
   if(window.innerWidth < 600) { // mobile
     r = 1.5 + depth * 1.5;   // smaller flakes
-    s = 1.5 + depth * 1;     // slower fall like desktop
+    s = 0.3 + depth * 0.3;   // slowest possible fall
   } else { // desktop
     r = 3 + depth * 2;       
     s = 1.5 + depth * 1;     
@@ -178,7 +177,7 @@ function createSnowflake() {
 function animateSnow() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  const snowChance = 0.8; // same for desktop and mobile
+  const snowChance = 0.8; 
   if (Math.random() < snowChance) createSnowflake();
 
   snowflakes.forEach(f => {
@@ -194,19 +193,19 @@ function animateSnow() {
       f.x = Math.random() * canvas.width;
       const depth = Math.random();
       f.r = window.innerWidth < 600 ? 1.5 + depth * 1.5 : 3 + depth * 2;
-      f.s = 1.5 + depth * 1;
+      f.s = window.innerWidth < 600 ? 0.3 + depth * 0.3 : 1.5 + depth * 1;
       f.opacity = 0.2 + depth * 0.5;
       f.dx = (Math.random() - 0.5) * 0.5;
     }
 
+    // Draw round droplet
     ctx.beginPath();
-    ctx.moveTo(f.x, f.y);
-    ctx.lineTo(f.x + f.dx*2, f.y + f.r * 4);
-    ctx.strokeStyle = `rgba(255,255,255,${f.opacity})`;
-    ctx.lineWidth = f.r;
-    ctx.stroke();
+    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${f.opacity})`;
+    ctx.fill();
   });
 
+  // Draw snow pile
   ctx.beginPath();
   ctx.moveTo(0, canvas.height);
   for(let i=0; i<snowPile.length; i++) {
@@ -226,17 +225,12 @@ const musicBtn = document.getElementById("musicBtn");
 const music = document.getElementById("music");
 
 musicBtn.addEventListener("click", () => {
-  if (music.paused) {
-    music.play();
-    if(window.innerWidth < 600) {
-        musicBtn.textContent = "🔊"; // mobile still gold
+    if (music.paused) {
+        music.play();
     } else {
-        musicBtn.textContent = "🔊"; // desktop still brown
+        music.pause();
     }
-  } else {
-    music.pause();
-    musicBtn.textContent = "🎵";
-  }
+    // symbol stays the same
 });
 </script>
 
