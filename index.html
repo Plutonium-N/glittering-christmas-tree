@@ -2,95 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Christmas Tree 🎄✨</title>
+<title>Christmas Tree 🎄</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  html, body {
+  body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background: linear-gradient(#0b1d2a, #16354a);
+    background: #001f3f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  img {
+    width: 100%;
+    max-width: 600px;
   }
 </style>
 </head>
 <body>
-<canvas id="scene"></canvas>
-<script>
-const canvas = document.getElementById("scene");
-const ctx = canvas.getContext("2d");
-
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
-resize();
-
-/* ---------- TREE ---------- */
-const tree = {
-    x: canvas.width / 2,
-    y: canvas.height * 0.7,
-    scale: 2,
-    ornaments: []
-};
-
-const colors = ["#ff0000", "#8b4513", "#ffd700"];
-for(let i=0;i<50;i++){
-    tree.ornaments.push({
-        angle: Math.random() * Math.PI - Math.PI/2,
-        height: Math.random() * 150,
-        radius: Math.random() * 5 + 5,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        twinkle: Math.random() * Math.PI * 2
-    });
-}
-
-/* ---------- STAR ---------- */
-const star = { x: tree.x, y: tree.y - 200, radius: 15, twinkle: Math.random()*Math.PI*2 };
-
-function drawStar() {
-    const t = Math.sin(star.twinkle)*0.5+0.5;
-    ctx.save();
-    ctx.translate(star.x, star.y);
-    ctx.beginPath();
-    for(let i=0;i<5;i++){
-        ctx.lineTo(Math.cos((18+i*72)/180*Math.PI)*star.radius,
-                   -Math.sin((18+i*72)/180*Math.PI)*star.radius);
-        ctx.lineTo(Math.cos((54+i*72)/180*Math.PI)*star.radius*0.5,
-                   -Math.sin((54+i*72)/180*Math.PI)*star.radius*0.5);
-    }
-    ctx.closePath();
-    const grad = ctx.createRadialGradient(0,0,0,0,0,star.radius*1.5);
-    grad.addColorStop(0, `rgba(255,192,203,${0.8*t})`);
-    grad.addColorStop(0.5, `rgba(255,215,0,${0.8*t})`);
-    grad.addColorStop(1, 'rgba(255,192,203,0)');
-    ctx.fillStyle = grad;
-    ctx.fill();
-    ctx.restore();
-    star.twinkle += 0.05;
-}
-
-/* ---------- DRAW TREE ---------- */
-function drawTree() {
-    ctx.save();
-    ctx.translate(tree.x, tree.y);
-    ctx.scale(tree.scale, tree.scale);
-    ctx.fillStyle = "#5a3a1c"; // trunk
-    ctx.fillRect(-15,0,30,60);
-
-    // branches
-    for(let i=0;i<6;i++){
-        ctx.beginPath();
-        ctx.moveTo(0,-180+i*40);
-        ctx.lineTo(-90+i*15,-40+i*40);
-        ctx.lineTo(90-i*15,-40+i*40);
-        ctx.closePath();
-        ctx.fillStyle = `rgb(20, ${80+i*20}, 40)`;
-        ctx.fill();
-    }
-
-    // ornaments
-    tree.ornaments.forEach(o=>{
-        const t = Math.sin(o.twinkle)*0.5+0.5;
-        ctx.beginPath();
-        ctx.arc(
+  <img src="christmas-tree.gif" alt="Christmas Tree">
+</body>
+</html>
