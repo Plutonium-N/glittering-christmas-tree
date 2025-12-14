@@ -68,7 +68,7 @@
     bottom: 30px;
     width: 100%;
     text-align: center;
-    font-size: 90px;
+    font-size: 90px; /* desktop size */
     font-weight: bold;
     color: gold;
     z-index: 3;
@@ -90,16 +90,16 @@
   /* Mobile adjustments */
   @media (max-width: 600px) {
     .tree-container img {
-      max-width: 90%;
-      margin-top: -50px;
+      max-width: 95%;       /* slightly bigger GIF */
+      margin-top: -30px;    /* move slightly higher */
     }
     .merry-text {
-      font-size: 36px;
+      font-size: 48px;      /* larger text */
     }
     #musicBtn {
-      width: 45px;
-      height: 45px;
-      font-size: 22px;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
     }
   }
 </style>
@@ -129,7 +129,6 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
-// Snowflake array and snow pile
 let snowflakes = [];
 let snowPile = Array(canvas.width).fill(0);
 
@@ -141,16 +140,22 @@ function createSnowflake() {
 
   const rand = Math.random();
   if (rand < 0.3) {
-    // 30% chance to fall in middle
+    // 30% chance in middle
     x = canvas.width/2 - centerWidth/2 + Math.random() * centerWidth;
   } else {
-    // 70% chance to fall outside middle
+    // 70% outside middle
     x = Math.random() * (canvas.width - centerWidth);
     if (x > canvas.width/2 - centerWidth/2) x += centerWidth;
   }
 
-  let r = window.innerWidth < 600 ? 1 + depth * 2 : 2 + depth * 2;
-  let s = window.innerWidth < 600 ? 1.5 + depth * 1.5 : 2 + depth * 2;
+  let r, s;
+  if(window.innerWidth < 600) { // mobile
+    r = 2 + depth * 2;       // slightly bigger
+    s = 1 + depth * 1.5;     // slightly slower
+  } else { // desktop
+    r = 3 + depth * 2;       // bigger
+    s = 1.5 + depth * 1;     // slower
+  }
 
   snowflakes.push({
     x: x,
@@ -181,8 +186,8 @@ function animateSnow() {
       f.y = -10;
       f.x = Math.random() * canvas.width;
       const depth = Math.random();
-      f.r = window.innerWidth < 600 ? 1 + depth * 2 : 2 + depth * 2;
-      f.s = window.innerWidth < 600 ? 1.5 + depth * 1.5 : 2 + depth * 2;
+      f.r = window.innerWidth < 600 ? 2 + depth * 2 : 3 + depth * 2;
+      f.s = window.innerWidth < 600 ? 1 + depth * 1.5 : 1.5 + depth * 1;
       f.opacity = 0.2 + depth * 0.5;
       f.dx = (Math.random() - 0.5) * 0.5;
     }
