@@ -34,7 +34,7 @@
     height: 100vh;
   }
   .tree-container img {
-    max-width: 600px;
+    max-width: 900px; /* slightly bigger for desktop */
     width: 100%;
   }
 
@@ -44,13 +44,13 @@
     top: 15px;
     right: 15px;
     z-index: 3;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border: none;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #FFD700, #FFA500);
-    box-shadow: 0 0 15px rgba(255,215,0,0.8);
-    font-size: 28px;
+    background: rgba(255, 215, 0, 0.8); /* slightly transparent */
+    box-shadow: 0 0 20px rgba(255,215,0,0.9);
+    font-size: 32px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -59,7 +59,7 @@
   }
   #musicBtn:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(255,215,0,1);
+    box-shadow: 0 0 30px rgba(255,215,0,1);
   }
 
   /* Merry Christmas text */
@@ -68,7 +68,7 @@
     bottom: 30px;
     width: 100%;
     text-align: center;
-    font-size: 60px;
+    font-size: 90px; /* larger for desktop */
     font-weight: bold;
     color: gold;
     z-index: 3;
@@ -96,6 +96,22 @@
       0 0 15px #FFA500,
       0 0 20px #FFD700; }
   }
+
+  /* Mobile adjustments */
+  @media (max-width: 600px) {
+    .tree-container img {
+      max-width: 90%;
+      margin-top: -50px; /* move GIF slightly higher */
+    }
+    .merry-text {
+      font-size: 36px; /* smaller text */
+    }
+    #musicBtn {
+      width: 45px;
+      height: 45px;
+      font-size: 22px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -122,101 +138,4 @@ const ctx = canvas.getContext("2d");
 
 function resize() {
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
-resize();
-
-// Snowflake array and snow pile
-let snowflakes = [];
-let snowPile = Array(canvas.width).fill(0);
-
-// Create rain-like snowflake with slant
-function createSnowflake() {
-  const depth = Math.random();
-  
-  const centerWidth = canvas.width * 0.3; 
-  let x;
-  if(Math.random() < 0.7) {
-    x = Math.random() < 0.5 
-        ? Math.random() * ((canvas.width - centerWidth)/2) 
-        : canvas.width - ((canvas.width - centerWidth)/2) + Math.random() * ((canvas.width - centerWidth)/2);
-  } else {
-    x = canvas.width/2 - centerWidth/2 + Math.random() * centerWidth;
-  }
-
-  snowflakes.push({
-    x: x,
-    y: -10,
-    r: 0.5 + depth * 1.5,
-    s: 1 + depth * 1.5,
-    opacity: 0.2 + depth * 0.5,
-    dx: (Math.random() - 0.5) * 0.5 // horizontal drift
-  });
-}
-
-// Animate snow
-function animateSnow() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  if (Math.random() < 0.7) createSnowflake();
-
-  snowflakes.forEach(f => {
-    f.y += f.s;
-    f.x += f.dx;
-
-    const column = Math.floor(f.x);
-    const pileHeight = snowPile[column] || 0;
-
-    if(f.y > canvas.height - pileHeight) {
-      snowPile[column] = pileHeight + f.r * 0.3;
-      f.y = -10;
-      f.x = Math.random() * canvas.width;
-      const depth = Math.random();
-      f.r = 0.5 + depth * 1.5;
-      f.s = 1 + depth * 1.5;
-      f.opacity = 0.2 + depth * 0.5;
-      f.dx = (Math.random() - 0.5) * 0.5;
-    }
-
-    // Draw as small line for raindrop effect
-    ctx.beginPath();
-    ctx.moveTo(f.x, f.y);
-    ctx.lineTo(f.x + f.dx*2, f.y + f.r * 4);
-    ctx.strokeStyle = `rgba(255,255,255,${f.opacity})`;
-    ctx.lineWidth = f.r;
-    ctx.stroke();
-  });
-
-  // Draw snow pile
-  ctx.beginPath();
-  ctx.moveTo(0, canvas.height);
-  for(let i=0; i<snowPile.length; i++) {
-    ctx.lineTo(i, canvas.height - snowPile[i]);
-  }
-  ctx.lineTo(canvas.width, canvas.height);
-  ctx.closePath();
-  ctx.fillStyle = "#ffffff";
-  ctx.fill();
-
-  requestAnimationFrame(animateSnow);
-}
-animateSnow();
-
-// Music button functionality
-const musicBtn = document.getElementById("musicBtn");
-const music = document.getElementById("music");
-
-musicBtn.addEventListener("click", () => {
-    if (music.paused) {
-        music.play();
-        musicBtn.textContent = "🔊";
-    } else {
-        music.pause();
-        musicBtn.textContent = "🎵";
-    }
-});
-</script>
-
-</body>
-</html>
+  canvas.height = window.innerHeight
