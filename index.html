@@ -236,6 +236,17 @@ resize();
 let snowflakes = [];
 let snowPile = Array(canvas.width).fill(0);
 
+/* Shooting stars for mobile */
+let stars = [];
+function createStar() {
+  stars.push({
+    x: Math.random() * 100,   // top-left area
+    y: Math.random() * 100,
+    length: 20 + Math.random() * 20,
+    speed: 4 + Math.random() * 3
+  });
+}
+
 /* Snowflake limits */
 const MAX_SNOW_MOBILE = 120;
 const MAX_SNOW_DESKTOP = 500;
@@ -265,7 +276,7 @@ function createSnowflake() {
 function animateSnow() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  const snowChance = window.innerWidth < 600 ? 0.25 : 0.8; // mobile less snow
+  const snowChance = window.innerWidth < 600 ? 0.25 : 0.8;
   const maxSnow = window.innerWidth < 600 ? MAX_SNOW_MOBILE : MAX_SNOW_DESKTOP;
 
   if (Math.random() < snowChance && snowflakes.length < maxSnow) createSnowflake();
@@ -289,6 +300,7 @@ function animateSnow() {
     ctx.fill();
   });
 
+  // Draw snowpile
   ctx.beginPath();
   ctx.moveTo(0, canvas.height);
   for (let i=0; i<snowPile.length; i++) {
@@ -298,6 +310,24 @@ function animateSnow() {
   ctx.closePath();
   ctx.fillStyle = "#ffffff";
   ctx.fill();
+
+  // Mobile shooting stars
+  if (window.innerWidth < 600 && Math.random() < 0.02) createStar();
+
+  stars.forEach((star, index) => {
+    star.x += star.speed;
+    star.y += star.speed; // diagonal top-left to bottom-right
+    ctx.beginPath();
+    ctx.moveTo(star.x, star.y);
+    ctx.lineTo(star.x - star.length * 0.5, star.y - star.length * 0.2);
+    ctx.strokeStyle = 'rgba(173,216,230,0.8)'; // light blue
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    if (star.x - star.length > canvas.width || star.y > canvas.height) {
+      stars.splice(index, 1);
+    }
+  });
 
   requestAnimationFrame(animateSnow);
 }
