@@ -8,7 +8,7 @@
   body {
     margin: 0;
     padding: 0;
-    background: #000000; /* black background */
+    background: #000000;
     overflow: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
@@ -131,11 +131,11 @@ resize();
 let snowflakes = [];
 let snowPile = Array(canvas.width).fill(0);
 
-// Create rain-like snowflake
+// Create rain-like snowflake with slant
 function createSnowflake() {
   const depth = Math.random();
   
-  const centerWidth = canvas.width * 0.3; // 30% center
+  const centerWidth = canvas.width * 0.3; 
   let x;
   if(Math.random() < 0.7) {
     x = Math.random() < 0.5 
@@ -148,9 +148,10 @@ function createSnowflake() {
   snowflakes.push({
     x: x,
     y: -10,
-    r: 0.5 + depth * 1.5,   // smaller radius for raindrop effect
-    s: 1 + depth * 1.5,     // faster speed
-    opacity: 0.2 + depth * 0.5
+    r: 0.5 + depth * 1.5,
+    s: 1 + depth * 1.5,
+    opacity: 0.2 + depth * 0.5,
+    dx: (Math.random() - 0.5) * 0.5 // horizontal drift
   });
 }
 
@@ -162,23 +163,26 @@ function animateSnow() {
 
   snowflakes.forEach(f => {
     f.y += f.s;
+    f.x += f.dx;
 
     const column = Math.floor(f.x);
     const pileHeight = snowPile[column] || 0;
+
     if(f.y > canvas.height - pileHeight) {
-      snowPile[column] = pileHeight + f.r * 0.3; 
+      snowPile[column] = pileHeight + f.r * 0.3;
       f.y = -10;
       f.x = Math.random() * canvas.width;
       const depth = Math.random();
       f.r = 0.5 + depth * 1.5;
       f.s = 1 + depth * 1.5;
       f.opacity = 0.2 + depth * 0.5;
+      f.dx = (Math.random() - 0.5) * 0.5;
     }
 
     // Draw as small line for raindrop effect
     ctx.beginPath();
     ctx.moveTo(f.x, f.y);
-    ctx.lineTo(f.x, f.y + f.r * 4);
+    ctx.lineTo(f.x + f.dx*2, f.y + f.r * 4);
     ctx.strokeStyle = `rgba(255,255,255,${f.opacity})`;
     ctx.lineWidth = f.r;
     ctx.stroke();
