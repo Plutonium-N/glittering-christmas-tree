@@ -47,4 +47,74 @@
 const canvas = document.getElementById("snowCanvas");
 const ctx = canvas.getContext("2d");
 
-function resi
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+// Snowflake array and snow pile
+let snowflakes = [];
+let snowPile = Array(canvas.width).fill(0);
+
+// Create snowflake with depth effect
+function createSnowflake() {
+  const depth = Math.random(); // 0 = far, 1 = near
+  snowflakes.push({
+    x: Math.random() * canvas.width,
+    y: -10,
+    r: 1 + depth * 4,       // radius: 1-5
+    s: 0.5 + depth * 1.5,   // speed: 0.5-2
+    opacity: 0.3 + depth * 0.7
+  });
+}
+
+// Animate snow
+function animateSnow() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Occasionally create new snowflake
+  if (Math.random() < 0.5) createSnowflake();
+
+  // Draw snowflakes
+  snowflakes.forEach(f => {
+    f.y += f.s;
+
+    // Snow pile collision
+    const column = Math.floor(f.x);
+    const pileHeight = snowPile[column] || 0;
+    if(f.y > canvas.height - pileHeight) {
+      snowPile[column] = pileHeight + f.r * 0.6; // uneven accumulation
+      f.y = -10;
+      f.x = Math.random() * canvas.width;
+      const depth = Math.random();
+      f.r = 1 + depth * 4;
+      f.s = 0.5 + depth * 1.5;
+      f.opacity = 0.3 + depth * 0.7;
+    }
+
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${f.opacity})`;
+    ctx.fill();
+  });
+
+  // Draw snow pile
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height);
+  for(let i=0; i<snowPile.length; i++) {
+    ctx.lineTo(i, canvas.height - snowPile[i]);
+  }
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.closePath();
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+
+  requestAnimationFrame(animateSnow);
+}
+animateSnow();
+</script>
+
+</body>
+</html>
