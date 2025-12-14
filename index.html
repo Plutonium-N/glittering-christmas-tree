@@ -129,17 +129,26 @@ body {
     margin-top: 50px;
   }
 
-  /* WHITE TEXT + GRADIENT GOLD GLOW */
+  /* GOLD TEXT + BROWN OUTLINE + GLOW */
   .merry-text {
     font-size: 36px;
-    color: #ffffff;
+    font-weight: bold;
+    color: #FFD700;
 
     text-shadow:
-      0 0 6px  #fff2b2,
-      0 0 12px #FFD700,
-      0 0 22px #FFA500,
-      0 0 35px #FFB700,
-      0 0 55px rgba(255, 183, 0, 0.95);
+      /* brown outline */
+      -1px -1px 0 #6b3e1e,
+       1px -1px 0 #6b3e1e,
+      -1px  1px 0 #6b3e1e,
+       1px  1px 0 #6b3e1e,
+
+      /* inner warm gold */
+      0 0 4px  #FFEB99,
+
+      /* outer gold glow */
+      0 0 10px #FFD700,
+      0 0 20px #FFA500,
+      0 0 35px rgba(255, 165, 0, 0.9);
 
     animation: goldPulse 2.5s ease-in-out infinite;
   }
@@ -147,19 +156,23 @@ body {
   @keyframes goldPulse {
     0%, 100% {
       text-shadow:
-        0 0 6px  #fff2b2,
-        0 0 12px #FFD700,
-        0 0 22px #FFA500,
-        0 0 35px #FFB700,
-        0 0 55px rgba(255, 183, 0, 0.9);
+        -1px -1px 0 #6b3e1e,
+         1px -1px 0 #6b3e1e,
+        -1px  1px 0 #6b3e1e,
+         1px  1px 0 #6b3e1e,
+        0 0 6px  #FFEB99,
+        0 0 14px #FFD700,
+        0 0 28px #FFA500;
     }
     50% {
       text-shadow:
-        0 0 12px #ffffff,
-        0 0 25px #FFE066,
-        0 0 45px #FFD700,
-        0 0 65px #FFA500,
-        0 0 90px rgba(255, 165, 0, 1);
+        -1px -1px 0 #6b3e1e,
+         1px -1px 0 #6b3e1e,
+        -1px  1px 0 #6b3e1e,
+         1px  1px 0 #6b3e1e,
+        0 0 10px #FFF2B2,
+        0 0 26px #FFD700,
+        0 0 45px #FFA500;
     }
   }
 
@@ -219,6 +232,10 @@ resize();
 let snowflakes = [];
 let snowPile = Array(canvas.width).fill(0);
 
+/* Snowflake limits */
+const MAX_SNOW_MOBILE = 120;
+const MAX_SNOW_DESKTOP = 500;
+
 function createSnowflake() {
   const depth = Math.random();
   const centerWidth = canvas.width * 0.3;
@@ -244,7 +261,10 @@ function createSnowflake() {
 function animateSnow() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  if (Math.random() < 0.8) createSnowflake();
+  const snowChance = window.innerWidth < 600 ? 0.25 : 0.8; // mobile less snow
+  const maxSnow = window.innerWidth < 600 ? MAX_SNOW_MOBILE : MAX_SNOW_DESKTOP;
+
+  if (Math.random() < snowChance && snowflakes.length < maxSnow) createSnowflake();
 
   snowflakes.forEach(f => {
     f.y += f.s;
@@ -254,7 +274,7 @@ function animateSnow() {
     const pileHeight = snowPile[column] || 0;
 
     if (f.y > canvas.height - pileHeight) {
-      snowPile[column] = pileHeight + f.r * 0.3;
+      snowPile[column] = pileHeight + (window.innerWidth < 600 ? f.r * 0.1 : f.r * 0.3);
       f.y = -10;
       f.x = Math.random() * canvas.width;
     }
