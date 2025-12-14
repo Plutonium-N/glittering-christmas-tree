@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Merry Christmas 🎄</title>
+<title>Glittering Christmas Tree 🎄</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -11,25 +11,30 @@
         padding: 0;
         overflow: hidden;
         background: linear-gradient(#0b1d2a, #16354a);
-        font-family: system-ui, sans-serif;
     }
 
-    #hint {
+    #musicBtn {
         position: fixed;
-        bottom: 20px;
-        width: 100%;
-        text-align: center;
-        color: #fff;
-        opacity: 0.8;
-        font-size: 14px;
+        top: 15px;
+        right: 15px;
+        padding: 12px 18px;
+        border-radius: 30px;
+        border: none;
+        background: rgba(255,255,255,0.85);
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 </style>
 </head>
 
 <body>
-<div id="hint">Merry Christmas 🎅❄️</div>
-
+<button id="musicBtn">▶ Music</button>
 <canvas id="scene"></canvas>
+
+<audio id="music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const canvas = document.getElementById("scene");
@@ -42,42 +47,12 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
-/* ---------- TREES ---------- */
-function drawTree(x, y, scale) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(scale, scale);
+/* ---------- TREE ---------- */
+const tree = {
+    x: canvas.width / 2,
+    y: canvas.height * 0.7,
+    scale: 2,
+    ornaments: []
+};
 
-    // trunk
-    ctx.fillStyle = "#5a3a1c";
-    ctx.fillRect(-10, 0, 20, 50);
-
-    // layers
-    for (let i = 0; i < 5; i++) {
-        ctx.beginPath();
-        ctx.moveTo(0, -120 + i * 35);
-        ctx.lineTo(-70 + i * 10, -40 + i * 35);
-        ctx.lineTo(70 - i * 10, -40 + i * 35);
-        ctx.closePath();
-        ctx.fillStyle = `rgb(20, ${80 + i * 20}, 40)`;
-        ctx.fill();
-
-        // snow on branches
-        ctx.strokeStyle = "rgba(255,255,255,0.8)";
-        ctx.lineWidth = 4;
-        ctx.stroke();
-    }
-
-    ctx.restore();
-}
-
-/* ---------- SNOW ---------- */
-let flakes = [];
-let snowPile = [];
-
-for (let i = 0; i < canvas.width; i += 4) {
-    snowPile.push(0);
-}
-
-function addFlake() {
-    flake
+const colors =
