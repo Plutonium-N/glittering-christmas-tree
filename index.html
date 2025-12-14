@@ -34,7 +34,7 @@
     height: 100vh;
   }
   .tree-container img {
-    max-width: 900px; /* slightly bigger for desktop */
+    max-width: 900px;
     width: 100%;
   }
 
@@ -48,7 +48,7 @@
     height: 70px;
     border: none;
     border-radius: 50%;
-    background: rgba(255, 215, 0, 0.8); /* slightly transparent */
+    background: rgba(255, 215, 0, 0.8);
     box-shadow: 0 0 20px rgba(255,215,0,0.9);
     font-size: 32px;
     cursor: pointer;
@@ -68,7 +68,7 @@
     bottom: 30px;
     width: 100%;
     text-align: center;
-    font-size: 90px; /* larger for desktop */
+    font-size: 90px;
     font-weight: bold;
     color: gold;
     z-index: 3;
@@ -83,28 +83,18 @@
   }
 
   @keyframes glitter {
-    0%, 100% { opacity: 1; text-shadow: 
-      0 0 5px #FFD700,
-      0 0 10px #FFD700,
-      0 0 20px #FFA500,
-      0 0 30px #FFA500,
-      0 0 40px #FFD700; }
-    50% { opacity: 0.8; text-shadow:
-      0 0 2px #FFD700,
-      0 0 5px #FFD700,
-      0 0 10px #FFA500,
-      0 0 15px #FFA500,
-      0 0 20px #FFD700; }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
   }
 
   /* Mobile adjustments */
   @media (max-width: 600px) {
     .tree-container img {
       max-width: 90%;
-      margin-top: -50px; /* move GIF slightly higher */
+      margin-top: -50px;
     }
     .merry-text {
-      font-size: 36px; /* smaller text */
+      font-size: 36px;
     }
     #musicBtn {
       width: 45px;
@@ -116,18 +106,14 @@
 </head>
 <body>
 
-<!-- Snow canvas -->
 <canvas id="snowCanvas"></canvas>
 
-<!-- Christmas tree GIF -->
 <div class="tree-container">
   <img src="merry-christmas-christmas-tree.gif" alt="Christmas Tree">
 </div>
 
-<!-- Merry Christmas text -->
 <div class="merry-text">Merry Christmas</div>
 
-<!-- Music button and audio -->
 <button id="musicBtn">🎵</button>
 <audio id="music" src="christmas-music.mp3" loop></audio>
 
@@ -138,4 +124,106 @@ const ctx = canvas.getContext("2d");
 
 function resize() {
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+// Snowflake array and snow pile
+let snowflakes = [];
+let snowPile = Array(canvas.width).fill(0);
+
+// Create snowflake
+function createSnowflake() {
+  const depth = Math.random();
+  const centerWidth = canvas.width * 0.3;
+  let x;
+
+  const rand = Math.random();
+  if (rand < 0.3) {
+    // 30% chance to fall in middle
+    x = canvas.width/2 - centerWidth/2 + Math.random() * centerWidth;
+  } else {
+    // 70% chance to fall outside middle
+    x = Math.random() * (canvas.width - centerWidth);
+    if (x > canvas.width/2 - centerWidth/2) x += centerWidth;
+  }
+
+  let r = window.innerWidth < 600 ? 1 + depth * 2 : 2 + depth * 2;
+  let s = window.innerWidth < 600 ? 1.5 + depth * 1.5 : 2 + depth * 2;
+
+  snowflakes.push({
+    x: x,
+    y: -10,
+    r: r,
+    s: s,
+    opacity: 0.2 + depth * 0.5,
+    dx: (Math.random() - 0.5) * 0.5
+  });
+}
+
+// Animate snow
+function animateSnow() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const snowChance = window.innerWidth < 600 ? 0.5 : 0.8;
+  if (Math.random() < snowChance) createSnowflake();
+
+  snowflakes.forEach(f => {
+    f.y += f.s;
+    f.x += f.dx;
+
+    const column = Math.floor(f.x);
+    const pileHeight = snowPile[column] || 0;
+
+    if(f.y > canvas.height - pileHeight) {
+      snowPile[column] = pileHeight + f.r * 0.3;
+      f.y = -10;
+      f.x = Math.random() * canvas.width;
+      const depth = Math.random();
+      f.r = window.innerWidth < 600 ? 1 + depth * 2 : 2 + depth * 2;
+      f.s = window.innerWidth < 600 ? 1.5 + depth * 1.5 : 2 + depth * 2;
+      f.opacity = 0.2 + depth * 0.5;
+      f.dx = (Math.random() - 0.5) * 0.5;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(f.x, f.y);
+    ctx.lineTo(f.x + f.dx*2, f.y + f.r * 4);
+    ctx.strokeStyle = `rgba(255,255,255,${f.opacity})`;
+    ctx.lineWidth = f.r;
+    ctx.stroke();
+  });
+
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height);
+  for(let i=0; i<snowPile.length; i++) {
+    ctx.lineTo(i, canvas.height - snowPile[i]);
+  }
+  ctx.lineTo(canvas.width, canvas.height);
+  ctx.closePath();
+  ctx.fillStyle = "#ffffff";
+  ctx.fill();
+
+  requestAnimationFrame(animateSnow);
+}
+animateSnow();
+
+// Music button
+const musicBtn = document.getElementById("musicBtn");
+const music = document.getElementById("music");
+
+musicBtn.addEventListener("click", () => {
+  if (music.paused) {
+    music.play();
+    musicBtn.textContent = "🔊";
+  } else {
+    music.pause();
+    musicBtn.textContent = "🎵";
+  }
+});
+</script>
+
+</body>
+</html>
+
